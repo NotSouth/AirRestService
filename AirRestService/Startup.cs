@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using AirRestService.Data;
+using AirRestService.Services;
 
 namespace AirRestService
 {
@@ -28,10 +31,15 @@ namespace AirRestService
         {
 
             services.AddControllers();
+            services.AddTransient<IAir, EFAirService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AirRestService", Version = "v1" });
             });
+
+            services.AddDbContext<AirRestServiceContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("AirRestServiceContext")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
