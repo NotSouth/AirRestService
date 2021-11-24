@@ -14,12 +14,6 @@ namespace AirRestService
     {
         public static void Main(string[] args)
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-
-            builder.DataSource = "<your_server.database.windows.net>";
-            builder.UserID = "<your_username>";
-            builder.Password = "<your_password>";
-            builder.InitialCatalog = "<your_database>";
             CreateHostBuilder(args).Build().Run();
         }
 

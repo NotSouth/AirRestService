@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using AirRestService.Models;
+using AirLibrary;
 
 namespace AirRestService.Data
 {
@@ -30,6 +30,6 @@ namespace AirRestService.Data
                 Humidity = "Drama2"
             });
         }
-        public DbSet<AirRestService.Models.Air> Air { get; set; }
+        public DbSet<Air> Air { get; set; }
     }
 }
