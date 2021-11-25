@@ -1,5 +1,4 @@
 ﻿using AirRestService.Data;
-using AirRestService.Managers;
 using AirRestService.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
