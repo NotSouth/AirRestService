@@ -43,6 +43,7 @@ namespace AirRestService.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Air value)
         {
+            value.TimeStamp = DateTime.Now;
             AirService.Create(value);
             return NoContent();
         }

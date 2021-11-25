@@ -17,7 +17,15 @@ namespace AirRestService.Services
 
         public List<Air> GetAll()
         {
-            return _service.Air.ToList();
+            try
+            {
+                return _service.Air.ToList();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
         }
         public Air Get(int id)
         {
