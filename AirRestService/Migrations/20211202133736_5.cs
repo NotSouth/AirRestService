@@ -3,7 +3,7 @@ using System;
 
 namespace AirRestService.Migrations
 {
-    public partial class _4 : Migration
+    public partial class _5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,7 @@ namespace AirRestService.Migrations
                     Temperature = table.Column<string>(type: "varchar(max)", nullable: false),
                     CO2 = table.Column<string>(type: "varchar(max)", nullable: false),
                     Humidity = table.Column<string>(type: "varchar(max)", nullable: false),
-                    TimeStamp = table.Column<DateTime>(type:"datetime2", nullable:false)
+                    TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,6 +25,7 @@ namespace AirRestService.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+
         }
     }
 }

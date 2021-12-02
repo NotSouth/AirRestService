@@ -15,5 +15,6 @@ namespace AirRestService.Services
         public void Update(int id, Air air);
         public void Remove(int id);
         public void Clean();
+        public Air GetAverage(int id);
     }
 }

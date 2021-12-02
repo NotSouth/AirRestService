@@ -30,7 +30,7 @@ namespace AirRestService.Services
         }
         public Air GetLatest()
         {
-            return _service.Air.Where(e => e.TimeStamp == _service.Air.Max(e2 => (DateTime?)e2.TimeStamp)).Single();
+            return _service.Air.Where(e => e.ID == _service.Air.Max(e2 => (int?)e2.ID)).Single();
         }
         public Air Get(int id)
         {
@@ -64,6 +64,18 @@ namespace AirRestService.Services
                 _service.SaveChanges();
             }
             else { Console.WriteLine("Database is not over the limit"); }
+        }
+        public Air GetAverage(int id) //id = which average to get, 1=today, 2=last day, 3=last week, 4=last month
+        {
+            return _service.Averages.Where(s =>s.ID==id).Single();
+        }
+        public void CalculateAverages()
+        {
+            //today average
+            _service.Air.Where(s => s.TimeStamp.DayOfYear == DateTime.Now.DayOfYear);
+            //foreach
+
+           //yesterday average
         }
     }
 }
