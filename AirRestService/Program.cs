@@ -1,3 +1,4 @@
+using AirRestService.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -14,7 +15,6 @@ namespace AirRestService
     {
         public static void Main(string[] args)
         {
-
             CreateHostBuilder(args).Build().Run();
         }
 

@@ -20,6 +20,7 @@ namespace AirRestService.Controllers
         public AirController(IAir _air)
         {
             AirService = _air;
+            
         }
         //public AirManager airmanager = new AirManager(AirService);
 
@@ -28,6 +29,15 @@ namespace AirRestService.Controllers
         public ActionResult<IEnumerable<Air>> GetAll()
         {
             return Ok(AirService.GetAll());
+        }
+        [HttpGet("/api/[controller]/Clean")]
+        public void Clean()
+        {
+            while (true)
+            {
+                System.Threading.Thread.Sleep(10000);
+                AirService.Clean();
+            }
         }
         [HttpGet("/api/[controller]/Latest")]
         public ActionResult<Air> GetLatest()

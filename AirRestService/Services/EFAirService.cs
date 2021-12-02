@@ -36,10 +36,6 @@ namespace AirRestService.Services
         {
             return _service.Air.Find(id);
         }
-        public int GetCount()
-        {
-            return _service.Air.Count();
-        }
         public void Create(Air air)
         {
             _service.Air.Add(air);
@@ -57,12 +53,17 @@ namespace AirRestService.Services
             _service.Air.Remove(_service.Air.Find(id));
             _service.SaveChanges();
         }
-        public async void Clean()
+        public void Clean()
         {
-            await Task.Delay(new TimeSpan(0, 0, 10)).ContinueWith(o =>
+            if(_service.Air.Count() > 80)
             {
-                //_service.Remove(id);
-            });
+                var maxid = _service.Air.Where(e => e.ID == _service.Air.Max(e2 => (int?)e2.ID)).Single().ID;
+                var oldest = _service.Air.Where(s => s.ID <= maxid - 80).ToList();
+                _service.RemoveRange(oldest);
+                Console.WriteLine("Removed " + _service.Air.Where(s => s.ID < maxid - 80).Count() + " items");
+                _service.SaveChanges();
+            }
+            else { Console.WriteLine("Database is not over the limit"); }
         }
     }
 }
