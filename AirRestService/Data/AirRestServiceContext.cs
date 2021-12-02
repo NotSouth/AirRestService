@@ -14,5 +14,6 @@ namespace AirRestService.Data
         {
         }
         public DbSet<Air> Air { get; set; }
+        public DbSet<Air> Averages { get; set; }
     }
 }

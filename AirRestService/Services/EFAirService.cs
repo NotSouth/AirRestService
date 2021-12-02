@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NPOI.SS.Formula.Functions;
 
 namespace AirRestService.Services
 {
@@ -27,9 +28,17 @@ namespace AirRestService.Services
                 return null;
             }
         }
+        public Air GetLatest()
+        {
+            return _service.Air.Where(e => e.TimeStamp == _service.Air.Max(e2 => (DateTime?)e2.TimeStamp)).Single();
+        }
         public Air Get(int id)
         {
             return _service.Air.Find(id);
+        }
+        public int GetCount()
+        {
+            return _service.Air.Count();
         }
         public void Create(Air air)
         {
@@ -47,6 +56,13 @@ namespace AirRestService.Services
         {
             _service.Air.Remove(_service.Air.Find(id));
             _service.SaveChanges();
+        }
+        public async void Clean()
+        {
+            await Task.Delay(new TimeSpan(0, 0, 10)).ContinueWith(o =>
+            {
+                //_service.Remove(id);
+            });
         }
     }
 }

@@ -29,6 +29,13 @@ namespace AirRestService.Controllers
         {
             return Ok(AirService.GetAll());
         }
+        [HttpGet("/api/[controller]/Latest")]
+        public ActionResult<Air> GetLatest()
+        {
+            if (AirService.GetLatest() != null)
+                return Ok(AirService.GetLatest());
+            else return BadRequest();
+        }
 
         // GET api/<AirController>/5
         [HttpGet("{id}")]
