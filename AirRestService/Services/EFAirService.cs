@@ -55,7 +55,8 @@ namespace AirRestService.Services
         }
         public void Clean()
         {
-            if(_service.Air.Count() > 80)
+            CalculateAverages();
+            if(_service.Air.Count() > 1000)
             {
                 var maxid = _service.Air.Where(e => e.ID == _service.Air.Max(e2 => (int?)e2.ID)).Single().ID;
                 var oldest = _service.Air.Where(s => s.ID <= maxid - 80).ToList();
@@ -65,17 +66,53 @@ namespace AirRestService.Services
             }
             else { Console.WriteLine("Database is not over the limit"); }
         }
-        public Air GetAverage(int id) //id = which average to get, 1=today, 2=last day, 3=last week, 4=last month
+        public Average GetAverage(Average.type type) // which average to get, 0=today, 1=last day, 2=last week, 3=last month
         {
-            return _service.Averages.Where(s =>s.ID==id).Single();
+            try
+            {
+                return _service.Averages.Where(s => s.Type == type).Single();
+            }
+            catch (InvalidOperationException)
+            {
+                return null; 
+            }
         }
         public void CalculateAverages()
         {
             //today average
-            _service.Air.Where(s => s.TimeStamp.DayOfYear == DateTime.Now.DayOfYear);
-            //foreach
+            var list = _service.Air.Where(s => s.TimeStamp.DayOfYear == DateTime.Now.DayOfYear);
+            if (list.Count() > 0)
+            {
+                double co2 = 0; double temp = 0; double hum = 0;
+                foreach (Air item in list)
+                {
+                    co2 = co2 + item.CO2;
+                    temp = temp + item.Temperature;
+                    hum = hum + item.Humidity;
+                }
+                co2 = co2 / list.Count();
+                temp = temp / list.Count();
+                hum = hum / list.Count();
 
-           //yesterday average
+                co2 = Math.Truncate(co2 * 100) / 100;
+                temp = Math.Truncate(temp * 100) / 100;
+                hum = Math.Truncate(hum * 100) / 100;
+
+                Average today = new Average(Average.type.today, co2, temp, hum, DateTime.Now);
+                try
+                {
+                    _service.Averages.Remove(_service.Averages.Where(s => s.Type == Average.type.today).Single());
+                }
+                catch (InvalidOperationException)
+                {
+
+                }
+                _service.Averages.Add(today);
+
+                _service.SaveChanges();
+            }
+
+            //yesterday average
         }
     }
 }

@@ -42,6 +42,33 @@ namespace AirRestService.Migrations
 
                     b.ToTable("Air");
                 });
+
+            modelBuilder.Entity("AirRestService.Data.Average", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("CO2")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Humidity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Temperature")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Averages");
+                });
 #pragma warning restore 612, 618
         }
     }

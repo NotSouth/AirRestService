@@ -1,4 +1,5 @@
 ﻿using AirLibrary;
+using AirRestService.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,6 @@ namespace AirRestService.Services
         public void Update(int id, Air air);
         public void Remove(int id);
         public void Clean();
-        public Air GetAverage(int id);
+        public Average GetAverage(Average.type type);
     }
 }

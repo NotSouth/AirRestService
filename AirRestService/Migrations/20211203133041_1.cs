@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AirRestService.Migrations
 {
@@ -7,25 +8,27 @@ namespace AirRestService.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Air",
+                name: "Averages",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Temperature = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CO2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Humidity = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CO2 = table.Column<double>(type: "float", nullable: false),
+                    Temperature = table.Column<double>(type: "float", nullable: false),
+                    Humidity = table.Column<double>(type: "float", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Air", x => x.ID);
+                    table.PrimaryKey("PK_Averages", x => x.ID);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Air");
+                name: "Averages");
         }
     }
 }
