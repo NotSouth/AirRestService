@@ -17,5 +17,6 @@ namespace AirRestService.Services
         public void Remove(int id);
         public void Clean();
         public Average GetAverage(Average.type type);
+        public List<Average> GetAverages();
     }
 }

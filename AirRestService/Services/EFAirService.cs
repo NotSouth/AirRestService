@@ -77,6 +77,17 @@ namespace AirRestService.Services
                 return null; 
             }
         }
+        public List<Average> GetAverages()
+        {
+            try
+            {
+                return _service.Averages.ToList();
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
+        }
         public void CalculateAverages()
         {
             //today average

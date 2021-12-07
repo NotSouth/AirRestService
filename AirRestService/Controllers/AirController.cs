@@ -53,6 +53,13 @@ namespace AirRestService.Controllers
                 return Ok(AirService.GetAverage(type));
             else return BadRequest();
         }
+        [HttpGet("/api/[controller]/Average")]
+        public ActionResult<Average> GetAverages()
+        {
+            if (AirService.GetLatest() != null)
+                return Ok(AirService.GetAverages());
+            else return BadRequest();
+        }
         // GET api/<AirController>/5
         [HttpGet("{id}")]
         public ActionResult<Air> Get(int id)
