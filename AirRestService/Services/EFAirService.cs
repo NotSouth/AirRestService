@@ -80,7 +80,7 @@ namespace AirRestService.Services
         public void CalculateAverages()
         {
             //today average
-            var list = _service.Air.Where(s => s.TimeStamp.DayOfYear == DateTime.Now.DayOfYear);
+            List<Air> list = _service.Air.Where(s => s.TimeStamp.DayOfYear == DateTime.Now.DayOfYear).ToList();
             if (list.Count() > 0)
             {
                 double co2 = 0; double temp = 0; double hum = 0;
@@ -108,11 +108,102 @@ namespace AirRestService.Services
 
                 }
                 _service.Averages.Add(today);
+            }
+            list.Clear();
+            //yesterday average
+            list = _service.Air.Where(s => s.TimeStamp.DayOfYear == DateTime.Now.DayOfYear-1).ToList();
+            if (list.Count() > 0)
+            {
+                double co2 = 0; double temp = 0; double hum = 0;
+                foreach (Air item in list)
+                {
+                    co2 = co2 + item.CO2;
+                    temp = temp + item.Temperature;
+                    hum = hum + item.Humidity;
+                }
+                co2 = co2 / list.Count();
+                temp = temp / list.Count();
+                hum = hum / list.Count();
 
-                _service.SaveChanges();
+                co2 = Math.Truncate(co2 * 100) / 100;
+                temp = Math.Truncate(temp * 100) / 100;
+                hum = Math.Truncate(hum * 100) / 100;
+
+                Average yesterday = new Average(Average.type.yesterday, co2, temp, hum, DateTime.Now);
+                try
+                {
+                    _service.Averages.Remove(_service.Averages.Where(s => s.Type == Average.type.yesterday).Single());
+                }
+                catch (InvalidOperationException)
+                {
+
+                }
+                _service.Averages.Add(yesterday);
+            }
+            list.Clear();
+            //week average
+            list = _service.Air.Where(s => s.TimeStamp.DayOfYear >= DateTime.Now.DayOfYear-7 && s.TimeStamp.DayOfYear <= DateTime.Now.DayOfYear).ToList();
+            if (list.Count() > 0)
+            {
+                double co2 = 0; double temp = 0; double hum = 0;
+                foreach (Air item in list)
+                {
+                    co2 = co2 + item.CO2;
+                    temp = temp + item.Temperature;
+                    hum = hum + item.Humidity;
+                }
+                co2 = co2 / list.Count();
+                temp = temp / list.Count();
+                hum = hum / list.Count();
+
+                co2 = Math.Truncate(co2 * 100) / 100;
+                temp = Math.Truncate(temp * 100) / 100;
+                hum = Math.Truncate(hum * 100) / 100;
+
+                Average lastweek = new Average(Average.type.lastweek, co2, temp, hum, DateTime.Now);
+                try
+                {
+                    _service.Averages.Remove(_service.Averages.Where(s => s.Type == Average.type.lastweek).Single());
+                }
+                catch (InvalidOperationException)
+                {
+
+                }
+                _service.Averages.Add(lastweek);
+            }
+            list.Clear();
+            //month average
+            list = _service.Air.Where(s => s.TimeStamp.DayOfYear >= DateTime.Now.DayOfYear - 30 && s.TimeStamp.DayOfYear <= DateTime.Now.DayOfYear).ToList();
+            if (list.Count() > 0)
+            {
+                double co2 = 0; double temp = 0; double hum = 0;
+                foreach (Air item in list)
+                {
+                    co2 = co2 + item.CO2;
+                    temp = temp + item.Temperature;
+                    hum = hum + item.Humidity;
+                }
+                co2 = co2 / list.Count();
+                temp = temp / list.Count();
+                hum = hum / list.Count();
+
+                co2 = Math.Truncate(co2 * 100) / 100;
+                temp = Math.Truncate(temp * 100) / 100;
+                hum = Math.Truncate(hum * 100) / 100;
+
+                Average lastmonth = new Average(Average.type.lastmonth, co2, temp, hum, DateTime.Now);
+                try
+                {
+                    _service.Averages.Remove(_service.Averages.Where(s => s.Type == Average.type.lastmonth).Single());
+                }
+                catch (InvalidOperationException)
+                {
+
+                }
+                _service.Averages.Add(lastmonth);
             }
 
-            //yesterday average
+            _service.SaveChanges();
         }
     }
 }
